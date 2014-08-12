@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.handlers.CustomInput;
+import com.mygdx.handlers.CustomInputProcessor;
 import com.mygdx.handlers.GameStateManager;
 
 public class BlockBunnyMain implements ApplicationListener {
@@ -25,6 +27,7 @@ public class BlockBunnyMain implements ApplicationListener {
 	public OrthographicCamera getHUDCamera(){return hudCam;}
 	
 	public void create() {
+		Gdx.input.setInputProcessor(new CustomInputProcessor());
 		sb=new SpriteBatch();
 		cam=new OrthographicCamera();
 		cam.setToOrtho(false,WIDTH,HEIGHT);
@@ -44,6 +47,7 @@ public class BlockBunnyMain implements ApplicationListener {
 			accum-=STEP;
 			gsm.update(STEP);
 			gsm.render();
+			CustomInput.update();
 		}
 	}
 
