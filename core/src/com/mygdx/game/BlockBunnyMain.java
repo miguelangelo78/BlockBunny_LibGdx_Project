@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.mygdx.globals.StateVars;
 import com.mygdx.handlers.CINput;
 import com.mygdx.handlers.CustomInputProcessor;
 import com.mygdx.handlers.GameStateManager;
@@ -13,7 +14,6 @@ public class BlockBunnyMain implements ApplicationListener {
 	public static final String TITLE="Block Bunny";
 	public static final int WIDTH=800,HEIGHT=600,SCALE=2;
 	public static final float STEP=1/60f;
-	private float accum;
 	private SpriteBatch sb;
 	private OrthographicCamera cam;
 	private OrthographicCamera hudCam;
@@ -45,7 +45,7 @@ public class BlockBunnyMain implements ApplicationListener {
 		cam.setToOrtho(false,WIDTH,HEIGHT);
 		hudCam=new OrthographicCamera();
 		hudCam.setToOrtho(false,WIDTH,HEIGHT);
-		gsm=new GameStateManager(this);
+		gsm=new GameStateManager(this,StateVars.PLAY);
 	}
 
 	public void render() {

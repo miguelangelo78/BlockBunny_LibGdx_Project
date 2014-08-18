@@ -2,83 +2,41 @@ package com.mygdx.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.entities.CrystalEntity;
 import com.mygdx.entities.HUDEntity;
 import com.mygdx.entities.PlayerEntity;
 import com.mygdx.entities.WorldEntity;
-import com.mygdx.game.BlockBunnyMain;
 import com.mygdx.globals.B2DVars;
-import com.mygdx.handlers.CContactListener;
+import com.mygdx.globals.StateVars;
 import com.mygdx.handlers.CINput;
 import com.mygdx.handlers.GameStateManager;
 import static com.mygdx.globals.B2DVars.*;
 
 public class PlayState extends GameState{
-		
-	private boolean debugMode=true;
-	private static World world;
-	private Box2DDebugRenderer b2dr;
-	private OrthographicCamera box2dcam;
-	private CContactListener cl;
 	
-	private TiledMap tileMap;
-	private float tileSize;
-	private OrthogonalTiledMapRenderer tmr;
-	
-	//ENTITIES:
-	private PlayerEntity player; //PLAYER ENTITY
+	//ENTITY VARIABLES:
+	private PlayerEntity player;
 	private Array<CrystalEntity> crystals; 
 	private HUDEntity hud;
-	private WorldEntity worldEntity;
-	
-	//TEMPORARY BEGIN
-	BitmapFont font;
-	SpriteBatch batch;
-	public String getOrientationStr(){
-		StringBuilder builder=new StringBuilder();
-		builder.append(" azimuth: "); builder.append((int)Gdx.input.getAzimuth());
-		builder.append(" pitch: "); builder.append((int)Gdx.input.getPitch());
-		builder.append(" roll: "); builder.append((int)Gdx.input.getRoll());
-		return builder.toString();
-	}
-	//TEMPORARY END
-	
-	public static World getWorld(){
-		return world;
-	}
 	
 	public PlayState(GameStateManager gsm) {
 		super(gsm);
-		// TEMPORARY:
-		font = new BitmapFont(); batch = new SpriteBatch();
-		
-		createWorld();
-		createEntities();
-		
-		// set up camera
-		box2dcam=new OrthographicCamera();
-		box2dcam.setToOrtho(false,BlockBunnyMain.WIDTH/PPM,BlockBunnyMain.HEIGHT/PPM);
 	}
 	
 	public void handleInput() {
 		if(CINput.isPressed(CINput.SPACE) && cl.isPlayerOnGround())	player.getBody().applyForceToCenter(0,9.81f*35,true);
 		
-		if(CINput.isPressed(CINput.BUTTON2)){}
+		if(CINput.isPressed(CINput.BUTTON2)){
+			gsm.setState(StateVars.MENU);
+		}
 		
 		if(CINput.isDown(CINput.LEFT)){
 			player.getBody().applyForceToCenter(-7f, 0, true);
@@ -107,34 +65,35 @@ public class PlayState extends GameState{
 		cleanupWorld();
 	}
 	
+	public void debugRenderer() {
+		if(debugMode){
+			//draw debug box2d:
+			box2dcam.position.set(player.getPosition().x,player.getPosition().y, 0);
+			box2dcam.update();
+			b2dr.render(world, box2dcam.combined);
+		}
+	}
+	
 	public void render() {
 		Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		Gdx.gl20.glClearColor(.7f, .7f,.5f, 0);
 		sb.setProjectionMatrix(cam.combined);
+		
 		//set camera to follow player
-		cam.position.set(player.getPosition().x*PPM,
-						 player.getPosition().y*PPM,0);
+		cam.position.set(player.getPosition().x*PPM,player.getPosition().y*PPM,0);
 		cam.update();
 		tmr.setView(cam);
 		tmr.render();
-		//draw box2d:
-		box2dcam.position.set(player.getPosition().x,player.getPosition().y, 0);
-		box2dcam.update();
-		if(debugMode) b2dr.render(world, box2dcam.combined);
-				
-		renderEntities();
 		
-		//TO DELETE LATER
-		batch.begin();
-		font.draw(batch,getOrientationStr(),100, 300);
-		batch.end();
+		debugRenderer();
+		renderEntities();
 	}
 
 	public void dispose() {
 		
 	}
 	
-	private void createEntities(){
+	protected void createEntities(){
 		player=new PlayerEntity(50,1000,world);	// create player
 		
 		//create crystals:
@@ -144,12 +103,9 @@ public class PlayState extends GameState{
 	
 		//create hud:
 		hud=new HUDEntity(player,world);
-		
-		//create terrain:
-		//terrain=new TerrainEntity(100, 100, world);
 	}
 	
-	private void renderEntities(){
+	protected void renderEntities(){
 		sb.setProjectionMatrix(cam.combined);
 		player.render(sb);
 		for(int i=0;i<crystals.size;i++) crystals.get(i).render(sb);
@@ -158,20 +114,13 @@ public class PlayState extends GameState{
 		hud.render(sb);
 	}
 	
-	private void updateEntities(float dt){
+	protected void updateEntities(float dt){
 		player.update(dt);
 		for(int i=0;i<crystals.size;i++) crystals.get(i).update(dt);
 		hud.update(dt);
-		//terrain.update(dt);
 	}
 	
-	private void createWorld(){
-		//set up box2d:
-		cl=new CContactListener();
-		world=new World(new Vector2(0,-9.81f),true);
-		world.setContactListener(cl);
-		b2dr=new Box2DDebugRenderer();
-		
+	protected void createWorld(){
 		//load tiled map:
 		tileMap=new TmxMapLoader().load("maps/test.tmx");
 		tmr=new OrthogonalTiledMapRenderer(tileMap);
@@ -185,7 +134,7 @@ public class PlayState extends GameState{
 		worldEntity.createLayer(tileMap.getLayers().get("terrain").getObjects(),B2DVars.BIT_GROUND,tileSize,"ground");
 	}
 	
-	private void cleanupWorld(){
+	protected void cleanupWorld(){
 		//remove bodies from world (if necessary):
 		for(Body body:cl.getBodiesToRemove()){
 			if(body.getUserData().getClass().toString().equals("class com.mygdx.entities.CrystalEntity")){
@@ -194,7 +143,6 @@ public class PlayState extends GameState{
 			}
 			world.destroyBody(body);
 		}
-		
 		cl.getBodiesToRemove().clear();
 	}
 }

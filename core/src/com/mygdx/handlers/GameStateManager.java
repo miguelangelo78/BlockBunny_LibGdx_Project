@@ -3,20 +3,21 @@ package com.mygdx.handlers;
 import java.util.Stack;
 
 import com.mygdx.game.BlockBunnyMain;
+import com.mygdx.globals.StateVars;
 import com.mygdx.states.GameState;
+import com.mygdx.states.MenuState;
 import com.mygdx.states.PlayState;
 
 public class GameStateManager {
 	private BlockBunnyMain game;
 	private Stack<GameState> gameStates;
-	public static final int PLAY=912893;
-	public GameStateManager(BlockBunnyMain game){
+	public GameStateManager(BlockBunnyMain game,int state){
 		this.game=game;
 		gameStates=new Stack<GameState>();
-		pushState(PLAY);
+		pushState(state);
 	}
 
-	public BlockBunnyMain Game(){
+	public BlockBunnyMain getGame(){
 		return game;
 	}
 	
@@ -29,7 +30,8 @@ public class GameStateManager {
 		
 	}
 	private GameState getState(int state){
-		if(state==PLAY) return new PlayState(this);
+		if(state==StateVars.MENU) return new MenuState(this);
+		if(state==StateVars.PLAY) return new PlayState(this);
 		return null;
 	}
 	
