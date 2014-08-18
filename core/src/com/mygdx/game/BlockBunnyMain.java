@@ -9,6 +9,7 @@ import com.mygdx.handlers.CINput;
 import com.mygdx.handlers.CustomInputProcessor;
 import com.mygdx.handlers.GameStateManager;
 import com.mygdx.handlers.ResourceManager;
+import com.mygdx.handlers.SoundPlayer;
 
 public class BlockBunnyMain implements ApplicationListener {
 	public static final String TITLE="Block Bunny";
@@ -32,9 +33,18 @@ public class BlockBunnyMain implements ApplicationListener {
 	
 	public void load_resources(){
 		res=new ResourceManager();
+		//TEMPORARY RESOURCES: (VARIES ACCORDING TO GAME)
+		//Load textures:
 		res.loadTexture("images/bunny.png", "bunny");
 		res.loadTexture("images/crystal.png","crystal");
 		res.loadTexture("images/hud.png","hud");
+		//Load sounds:
+		res.loadSound("sfx/jump.wav","jump_snd");
+		res.loadSound("sfx/crystal.wav","crystal_snd");
+		//Load music:
+		res.loadMusic("music/bbsong.ogg", "bbsong");
+		
+		SoundPlayer.playMusic("bbsong", false, .5f, 0f);
 	}
 	
 	public void create() {
@@ -68,7 +78,6 @@ public class BlockBunnyMain implements ApplicationListener {
 	}
 
 	public void dispose() {
-		
+		res.cleanUp();
 	}
-
 }
