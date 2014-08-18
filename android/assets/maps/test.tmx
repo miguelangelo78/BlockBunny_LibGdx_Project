@@ -1,22 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="40" height="8" tilewidth="32" tileheight="32" backgroundcolor="#298080">
+<map version="1.0" orientation="orthogonal" width="1200" height="32" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="blocks" tilewidth="32" tileheight="32">
   <image source="blocks.png" width="96" height="32"/>
  </tileset>
- <layer name="blue" width="40" height="8">
+ <layer name="red" width="1200" height="32">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2D4A2YS8EC5jdpqqQVItW8ouQ8AXaQAOg==
+   eJzt3dGKgzAQQFGt///Py74tdpVEE51JzoFQaJFKYR68hHRbAAAAACCu7e0bAAAAAIAT+hUAAAAAkelXAAAAAESmXwEAAAAQmX4F+X3evgEAAADoSL+C/PQrAAAARvZEv/JsDX2ZMQAAAEamX9VZ/yyIYqQZAwAAgD39qs66e4UIRpoxAAAA2Ju9X60X1rLoV8QReb4AAACgBf3q2eugtcjzBQAAAC3M3K/uNCj9iiiizhcAAAC0ol9dv1bDIoKo8wUAAACt/NevtoP3r4r6fH23P+lXRBB1vgAAAKCVo1a1nXxWK+rztX7FCKLOFwAAALR01qha78WKRL8iu8+iXwEAADCHkj41YsdyfjvZaVcAAADMorRL6VdtroVW9CsAAABmUdOvRmpY+hWZaVcAAADMpKZJjdSw7vYrDYu3OPcKAACA2dT2qG1p+/+Eb3F+O1lpVwAAAMzoaofK2rFa7J/Sr3iDdgUAAMCs7van/Z6s6D1Le3rG52RRx+8GAADA7Fr3psgtS7vqq7RT6VnH9D4AAAD4Fq0x9eLc9X7utJazfVp3VhZZ7xsAAACedNSvRupa2lU/uks9vQoAAADqnPWro5WFbtVPhv4SbW9TlPsAAACAbDL1qFLrol31krXBvNGxovUzAAAAyCpLvyrtUbpVHyN1mB7nZWU/hwsAAAAiy9Kvfq2FC2pdPQtepwIAAID+zs65KlnZlDawO6v0e1qa/X/8AAAAgPH8AMWyApI=
   </data>
  </layer>
- <layer name="green" width="40" height="8">
+ <layer name="green" width="1200" height="32">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2BoAyYceDAAXG4ZDO4jFE4D6UZi4pAa7gMAMNAAHw==
+   eJzt3MEJACAMBEG1/6J9+1MfeoQZuCYWktYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD+G5sDAAAAAAAAAAAAAAAAAGpyTwgAAABAKt0KAAAAgFTaFQAAAADJtCsAAAAAUmlXAAAAACTyqx0AAACAVLoVAAAAAKm0KwAAAABeG4dj1S8HAAAAUNUEqSkAWw==
   </data>
  </layer>
- <layer name="red" width="40" height="8">
+ <layer name="blue" width="1200" height="32">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2DwA0YseLCAweYeZDAY3IYt7vBhegIAHIgAFg==
+   eJztwTEBAAAAwqD1T20KP6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgJcBWB4AAQ==
   </data>
  </layer>
- <objectgroup name="Crystals" width="40" height="8"/>
+ <objectgroup name="crystals" width="1200" height="32"/>
+ <objectgroup name="terrain" width="1200" height="32">
+  <object x="120" y="104">
+   <polyline points="0,0 338,282 908,188 1518,262 1834,8"/>
+  </object>
+  <object x="3118" y="1008">
+   <polyline points="0,0 346,-76 562,-74 722,-22 844,-60 1126,-382 1192,-394"/>
+  </object>
+  <object x="4284" y="642">
+   <polyline points="0,0 1010,52 1722,-10 2252,118 3142,-132"/>
+  </object>
+ </objectgroup>
 </map>

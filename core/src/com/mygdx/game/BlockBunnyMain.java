@@ -1,16 +1,13 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.handlers.CustomInput;
+import com.mygdx.handlers.CINput;
 import com.mygdx.handlers.CustomInputProcessor;
 import com.mygdx.handlers.GameStateManager;
+import com.mygdx.handlers.ResourceManager;
 
 public class BlockBunnyMain implements ApplicationListener {
 	public static final String TITLE="Block Bunny";
@@ -21,36 +18,47 @@ public class BlockBunnyMain implements ApplicationListener {
 	private OrthographicCamera cam;
 	private OrthographicCamera hudCam;
 	private GameStateManager gsm;
+	public static ResourceManager res;
 	
-	public SpriteBatch getSpriteBatch(){return sb;}
-	public OrthographicCamera getCamera(){return cam;}
-	public OrthographicCamera getHUDCamera(){return hudCam;}
+	public SpriteBatch getSpriteBatch(){
+		return sb;
+	}
+	public OrthographicCamera getCamera(){
+		return cam;
+	}
+	public OrthographicCamera getHUDCamera(){
+		return hudCam;
+	}
+	
+	public void load_resources(){
+		res=new ResourceManager();
+		res.loadTexture("images/bunny.png", "bunny");
+		res.loadTexture("images/crystal.png","crystal");
+		res.loadTexture("images/hud.png","hud");
+	}
 	
 	public void create() {
 		Gdx.input.setInputProcessor(new CustomInputProcessor());
+		load_resources();
 		sb=new SpriteBatch();
 		cam=new OrthographicCamera();
 		cam.setToOrtho(false,WIDTH,HEIGHT);
 		hudCam=new OrthographicCamera();
 		hudCam.setToOrtho(false,WIDTH,HEIGHT);
 		gsm=new GameStateManager(this);
-		
+	}
+
+	public void render() {
+		Gdx.graphics.setTitle(TITLE+" -- FPS: "+Gdx.graphics.getFramesPerSecond());
+		gsm.update(Gdx.graphics.getDeltaTime());
+		gsm.render();
+		CINput.update();
 	}
 
 	public void resize(int width, int height) {
 		
 	}
-
-	public void render() {
-		accum+=Gdx.graphics.getDeltaTime();
-		while(accum>=STEP){
-			accum-=STEP;
-			gsm.update(STEP);
-			gsm.render();
-			CustomInput.update();
-		}
-	}
-
+	
 	public void pause() {
 		
 	}
@@ -60,7 +68,7 @@ public class BlockBunnyMain implements ApplicationListener {
 	}
 
 	public void dispose() {
-		System.out.println("DISPOSED");
+		
 	}
 
 }

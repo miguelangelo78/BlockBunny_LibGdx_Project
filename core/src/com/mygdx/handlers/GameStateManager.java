@@ -4,7 +4,7 @@ import java.util.Stack;
 
 import com.mygdx.game.BlockBunnyMain;
 import com.mygdx.states.GameState;
-import com.mygdx.states.Play;
+import com.mygdx.states.PlayState;
 
 public class GameStateManager {
 	private BlockBunnyMain game;
@@ -29,7 +29,7 @@ public class GameStateManager {
 		
 	}
 	private GameState getState(int state){
-		if(state==PLAY) return new Play(this);
+		if(state==PLAY) return new PlayState(this);
 		return null;
 	}
 	
